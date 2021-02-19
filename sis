@@ -1,0 +1,22 @@
+#!/usr/bin/env sh
+set -e # Exit on failure
+
+. agent.sh # Obviously assumes that "agent.sh" is in the same directory
+
+HOME="${HOMEDIRS}/${UNAME}"
+
+if [ -d "${HOME}" ]; then
+    # We already have a directory there.  Is it owned by the right uid/gid?
+    h_uid=$(ls -nd "${HOME}" | awk '{print $3}')
+    h_gid=$(ls -nd "${HOME}" | awk '{print $4}')
+    # 
+    if [ "${h_uid}" == "${UID}" ] && [ "${h_gid}" == "${UID}" ]; then
+	exit 0 # Nothing to do; all present and correct
+    fi
+    echo "${HOME} exists but owned by ${h_uid}:${h_gid} not ${UID}:${UID}" 1>&2
+    exit 1
+fi
+# We don't have it, so make it.
+mkdir "${HOME}"
+chown ${UID}:${UID} "${HOME}"
+chmod 0700 "${HOME}"

@@ -8,6 +8,7 @@ kind: Pod
 metadata:
   name: inituserhome
 spec:
+  restartPolicy: OnFailure
   securityContext:
     runAsNonRoot: false # Needed for privileged FS writes
     runAsUser: 0        #  (also no_root_squash, if NFS)
@@ -37,4 +38,4 @@ spec:
       nfs:
         server: 127.0.0.1
         path: /share1/home
-        accessMode: ReadWriteMany
+        readOnly: false

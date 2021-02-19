@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+set -e # Exit on failure
+
+. agent.sh # Obviously assumes that "agent.sh" is in the same directory
+
+HOME="${HOMEDIRS}/${UNAME}"
+
+# No, Mr. Bond.  I expect you to die.
+rm -rf "${HOME}"

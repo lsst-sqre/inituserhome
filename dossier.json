@@ -2,7 +2,7 @@
   "token": {
     "data": {
       "uid": "jb007",
-      "uidNumber": 1007,
+      "uidNumber": "1007",
       "isMemberOf": [
         {
           "name": "doubleos",

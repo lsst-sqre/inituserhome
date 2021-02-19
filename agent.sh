@@ -1,6 +1,6 @@
-#!/usr/bin/env sh
-set -e # Exit on failure
-
+# This is a fragment that will be sourced by our filesystem-manipulating
+#  tasks.  Since they have common options parsing and validation, we will
+#  just share them
 HOMEDIRS="/homedirs"
 DOSSIER="/opt/dossier/dossier.json"
 
@@ -50,19 +50,3 @@ if [ ${insufficient} -eq 1 ]; then
 fi
 
 # We have what we need to proceed.
-
-HOME="${HOMEDIRS}/${UNAME}"
-
-if [ -d "${HOME}" ]; then
-    # We already have a directory there.  Is it owned by the right uid/gid?
-    h_uid=$(ls -nd | awk '{print $3}')
-    h_gid=$(ls -nd | awk '{print $4}')
-    if [ ${h_uid} -eq ${UID} ] && [ ${h_gid} -eq ${UID} ]; then
-	exit 0 # Nothing to do; all present and correct
-    fi
-    echo "${HOME} exists but owned by ${h_uid}:${h_gid} not ${UID}:${UID}" 1>&2
-    exit 1
-fi
-# We don't have it, so make it.
-mkdir "${HOME}"
-chown ${UID}:${UID} "${HOME}"
