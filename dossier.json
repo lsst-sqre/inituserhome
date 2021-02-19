@@ -1,0 +1,18 @@
+{
+  "token": {
+    "data": {
+      "uid": "jb007",
+      "uidNumber": 1007,
+      "isMemberOf": [
+        {
+          "name": "doubleos",
+          "id": 500
+        },
+        {
+          "name": "staff",
+          "id": 200
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,40 @@
+# In usual operation, the inituserhome image will be run as an
+# initContainer within a Pod dispatched by Moneypenny.  Moneypenny
+# will create the Pod from a user dossier and standing orders from M,
+# which will specify the volume definition (as well as which containers
+# to run when given an order, which is an HTTP verb).
+apiVersion: apps/v1
+kind: Pod
+metadata:
+  name: inituserhome
+spec:
+  securityContext:
+    runAsNonRoot: false # Needed for privileged FS writes
+    runAsUser: 0        #  (also no_root_squash, if NFS)
+  containers:
+    - imagePullPolicy: "Always"
+      image: "lsstsqre/inituserhome"
+      # In usual operation, the dossier volume mount will be injected
+      # into the container by Moneypenny.  However, the homedir
+      # mountpoint is the container's responsibility.  (Some init
+      # containers might choose to ignore it.)
+      volumeMounts:
+      - name: dossier
+        mountPath: /opt/dossier
+        readOnly: true
+      - name: homedirs
+        mountPath: /homedirs
+        readOnly: false
+  # In usual operations both of these will be injected into the pod by
+  #  Moneypenny.  That does mean that the choice of where to mount the
+  #  homedirs volume is that of the initContainer definition, although
+  #  the dossier is not.
+  volumes:
+    - name: dossier
+      configmap:
+        name: user-dossier
+    - name: homedirs
+      nfs:
+        server: 127.0.0.1
+        path: /share1/home
+        accessMode: ReadWriteMany
