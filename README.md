@@ -28,12 +28,10 @@ retires an agent.
   games.  I mean, if one wanted to.
 * [dossier.json](./dossier.json) is an example of what the dossier
   mounted into the pod will look like.  All these two containers use
-  from it are the username (in the `uid` field) and the numeric UID (in
-  the `uidNumber` field) (which is a string--look, man, it was like that
-  when I got here).  These fields are nested within `token.data` and the
-  dossier is exactly the format returned from
+  from it are the username (in the `username` field) and the numeric UID (in
+  the `uid` field).  This is the format returned by
   [Gafaelfawr](https://github.com/lsst-sqre/gafaelfawr)'s
-  `/auth/analyze` endpoint.
+  `/auth/api/v1/user-info` endpoint.
 * [pod.yaml](./pod.yaml) is a Pod constructed from this container,
   although in actual use, this container will be an initContainer within
   a Pod managed by Moneypenny; it shows how the SecurityContext, the

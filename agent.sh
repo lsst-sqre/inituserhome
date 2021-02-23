@@ -23,15 +23,15 @@ while getopts "f:v:" opt ; do
 done
 shift $((OPTIND-1))
 
-UNAME=$(jq -r .token.data.uid < ${DOSSIER})
-UID=$(jq -r .token.data.uidNumber < ${DOSSIER})
+UNAME=$(jq -r .username < ${DOSSIER})
+UID=$(jq -r .uid < ${DOSSIER})
 
 # We have to do something a little silly here, because jq reports "null" for
 #  a missing value, and it's possible, if unlikely, that a username could
 #  indeed be "null".
 user_is_actually_named_null=0
 if [ ${UNAME} == "null" ]; then
-    grep -q '\"uid\":[[:space:]]*\"null\"' ${DOSSIER}
+    grep -q '\"username\":[[:space:]]*\"null\"' ${DOSSIER}
     rc=$?
     if [ ${rc} -eq 0]; then
 	user_is_actually_named_null=1
